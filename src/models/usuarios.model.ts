@@ -1,7 +1,7 @@
 import {Entity, model, property} from '@loopback/repository';
 
 @model({settings: {strict: false}})
-export class Usuario extends Entity {
+export class Usuarios extends Entity {
   @property({
     type: 'string',
     id: true,
@@ -25,13 +25,13 @@ export class Usuario extends Entity {
     type: 'string',
     required: true,
   })
-  celular: string;
+  correo: string;
 
   @property({
     type: 'string',
     required: true,
   })
-  correo: string;
+  celular: string;
 
   @property({
     type: 'string',
@@ -45,13 +45,13 @@ export class Usuario extends Entity {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
 
-  constructor(data?: Partial<Usuario>) {
+  constructor(data?: Partial<Usuarios>) {
     super(data);
   }
 }
 
-export interface UsuarioRelations {
+export interface UsuariosRelations {
   // describe navigational properties here
 }
 
-export type UsuarioWithRelations = Usuario & UsuarioRelations;
+export type UsuariosWithRelations = Usuarios & UsuariosRelations;

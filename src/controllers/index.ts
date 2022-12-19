@@ -1,3 +1,3 @@
 export * from './ping.controller';
-export * from './equipo.controller';
-export * from './usuario.controller';
+export * from './usuarios.controller';
+export * from './equipos.controller';
