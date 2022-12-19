@@ -11,31 +11,31 @@ export class Usuarios extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   nombres: string;
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   apellidos: string;
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   correo: string;
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   celular: string;
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   contrasenia: string;
 

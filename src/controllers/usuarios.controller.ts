@@ -16,15 +16,15 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
 import {Usuarios} from '../models';
 import {UsuariosRepository} from '../repositories';
+const jwt = require('jsonwebtoken');
 
 export class UsuariosController {
-  constructor(
-    @repository(UsuariosRepository)
-    public usuariosRepository : UsuariosRepository,
-  ) {}
+
+  constructor( @repository(UsuariosRepository) public usuariosRepository : UsuariosRepository) {}
 
   @post('/usuarios')
   @response(200, {
@@ -45,6 +45,44 @@ export class UsuariosController {
     usuarios: Omit<Usuarios, 'id'>,
   ): Promise<Usuarios> {
     return this.usuariosRepository.create(usuarios);
+  }
+
+  @post('/usuarios/login')
+  @response(200, {
+    description: 'Usuarios model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Usuarios)}},
+  })
+  async login(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Usuarios, {
+            title: 'NewUsuarios',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    usuarios: Omit<Usuarios, 'id'>,
+  ): Promise<any> {
+    let user = await this.usuariosRepository.findOne({where:{correo: usuarios.correo, contrasenia: usuarios.contrasenia}});
+    if(user){
+      let tk = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60*60),
+        data: {
+          username: user.correo
+        }
+      }, 'Semilla');
+      return{
+        data: {
+          nombres: user.nombres,
+          correo: user.correo
+        },      
+      token: tk
+      }
+    }else{
+      throw new HttpErrors[401]("Usuario inexistente")
+    }
   }
 
   @get('/usuarios/count')
