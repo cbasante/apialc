@@ -11,13 +11,13 @@ export class Equipos extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    //required: true,
   })
   nombre: string;
 
   @property({
     type: 'object',
-    required: true,
+    //required: true,
   })
   capitan: object;
 
