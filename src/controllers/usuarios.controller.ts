@@ -4,19 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
-  HttpErrors,
+  del, get,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Usuarios} from '../models';
 import {UsuariosRepository} from '../repositories';
@@ -24,7 +17,7 @@ const jwt = require('jsonwebtoken');
 
 export class UsuariosController {
 
-  constructor( @repository(UsuariosRepository) public usuariosRepository : UsuariosRepository) {}
+  constructor(@repository(UsuariosRepository) public usuariosRepository: UsuariosRepository) { }
 
   @post('/usuarios')
   @response(200, {
@@ -65,22 +58,22 @@ export class UsuariosController {
     })
     usuarios: Omit<Usuarios, 'id'>,
   ): Promise<any> {
-    let user = await this.usuariosRepository.findOne({where:{correo: usuarios.correo, contrasenia: usuarios.contrasenia}});
-    if(user){
+    let user = await this.usuariosRepository.findOne({where: {correo: usuarios.correo, contrasenia: usuarios.contrasenia}});
+    if (user) {
       let tk = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60*60),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
         data: {
           username: user.correo
         }
       }, 'Semilla');
-      return{
+      return {
         data: {
           nombres: user.nombres,
           correo: user.correo
-        },      
-      token: tk
+        },
+        token: tk
       }
-    }else{
+    } else {
       throw new HttpErrors[401]("Usuario inexistente")
     }
   }
